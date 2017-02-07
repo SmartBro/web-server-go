@@ -11,9 +11,12 @@ import (
 
 func main() {
 	address := ":8080"
-	router := mux.NewRouter()
+	router := mux.NewRouter().StrictSlash(false)
 	router.Handle("/api", api.APIRouter)
 	router.Handle("/api/{_dummy:.*}", api.APIRouter)
+	router.Handle("/", http.FileServer(http.Dir("./static/")))
+	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("./static/assets/"))))
+
 	server := &http.Server{
 		Addr:    address,
 		Handler: router,
