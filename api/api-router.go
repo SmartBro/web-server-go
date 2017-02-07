@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+//Company model
 type Company struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
@@ -15,13 +16,13 @@ type Company struct {
 }
 
 // APIRouter is a router for api
-var APIRouter = mux.NewRouter().StrictSlash(false)
+var APIRouter = mux.NewRouter().PathPrefix("/api").Subrouter()
 
 func init() {
-	APIRouter.HandleFunc("/api/companies", getCompanies).Methods("GET")
-	APIRouter.HandleFunc("/api/companies", addCompany).Methods("POST")
-	APIRouter.HandleFunc("/api/companies/{id}", updateCompany).Methods("PUT")
-	APIRouter.HandleFunc("/api/companies/{id}", removeCompany).Methods("DELETE")
+	APIRouter.HandleFunc("/companies", getCompanies).Methods("GET")
+	APIRouter.HandleFunc("/companies", addCompany).Methods("POST")
+	APIRouter.HandleFunc("/companies/{id}", updateCompany).Methods("PUT")
+	APIRouter.HandleFunc("/companies/{id}", removeCompany).Methods("DELETE")
 }
 
 func getCompanies(w http.ResponseWriter, r *http.Request) {
